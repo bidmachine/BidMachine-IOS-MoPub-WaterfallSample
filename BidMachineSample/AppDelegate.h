@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <mopub-ios-sdk/MoPub.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
++ (NSDictionary *)localExtras;
 
 @end
 

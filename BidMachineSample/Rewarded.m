@@ -7,108 +7,77 @@
 //
 
 #import "Rewarded.h"
-#import <mopub-ios-sdk/MoPub.h>
 
 #define UNIT_ID         "b94009cbb6b7441eb097142f1cb5e642"
 
-@interface Rewarded ()<MPRewardedVideoDelegate>
+@interface Rewarded ()<MPRewardedAdsDelegate>
 
 @end
 
 @implementation Rewarded
 
 - (void)loadAd:(id)sender {
-    [MPRewardedVideo setDelegate:self forAdUnitId:@UNIT_ID];
-    [MPRewardedVideo loadRewardedVideoAdWithAdUnitID:@UNIT_ID
-                                            keywords:nil
-                                    userDataKeywords:nil
-                                          customerId:nil
-                                   mediationSettings:nil
-                                         localExtras:self.extras];
+    [MPRewardedAds setDelegate:self forAdUnitId:@UNIT_ID];
+    [MPRewardedAds loadRewardedAdWithAdUnitID:@UNIT_ID
+                                     keywords:nil
+                             userDataKeywords:nil
+                                   customerId:nil
+                            mediationSettings:nil
+                                  localExtras:AppDelegate.localExtras];
 }
 
 - (void)showAd:(id)sender {
-    [MPRewardedVideo presentRewardedVideoAdForAdUnitID:@UNIT_ID fromViewController:self withReward:nil];
-}
-
-#pragma mark - Extras
-
-- (NSDictionary *)extras {
-    NSDictionary *localExtras = @{};
-//    NSDictionary *localExtras = @{
-//        @"seller_id": @"1",
-//        @"coppa": @"true",
-//        @"consent_string": @"BOEFEAyOEFEAyAHABDENAI4AAAB9vABAASA",
-//        @"endpoint" : @"some_url_endpoint",
-//        @"logging_enabled": @"true",
-//        @"test_mode": @"true",
-//        @"banner_width": @"320",
-//        @"userId": @"user123",
-//        @"gender": @"F",
-//        @"yob": @2000,
-//        @"keywords": @"Keyword_1,Keyword_2,Keyword_3,Keyword_4",
-//        @"country": @"USA",
-//        @"city": @"Los Angeles",
-//        @"zip": @"90001–90084",
-//        @"sturl": @"https://store_url.com",
-//        @"paid": @"true",
-//        @"bcat": @"IAB-1,IAB-3,IAB-5",
-//        @"badv": @"https://domain_1.com,https://domain_2.org",
-//        @"bapps": @"com.test.application_1,com.test.application_2,com.test.application_3",
-//        @"priceFloors": @[
-//                @{ @"id_1": @300.06 },
-//                @{ @"id_2": @1000 },
-//                @302.006,
-//                @1002
-//        ]
-//    };
-    return localExtras;
+    [MPRewardedAds presentRewardedAdForAdUnitID:@UNIT_ID fromViewController:self withReward:nil];
 }
 
 #pragma mark - MPRewardedVideoDelegate
 
-- (void)rewardedVideoAdDidLoadForAdUnitID:(NSString *)adUnitID {
-    NSLog(@"interstitialDidReceiveAd");
+- (void)rewardedAdDidLoadForAdUnitID:(NSString *)adUnitID {
+    NSLog(@"rewardedDidReceiveAd");
 }
 
-- (void)rewardedVideoAdDidFailToLoadForAdUnitID:(NSString *)adUnitID error:(NSError *)error {
+- (void)rewardedAdDidFailToLoadForAdUnitID:(NSString *)adUnitID error:(NSError *)error {
     NSLog(@"rewarded:didFailToReceiveAdWithError: %@", [error localizedDescription]);
 }
 
-- (void)rewardedVideoAdDidExpireForAdUnitID:(NSString *)adUnitID {
+- (void)rewardedAdDidExpireForAdUnitID:(NSString *)adUnitID {
     NSLog(@"rewardedDidExpired");
 }
 
-- (void)rewardedVideoAdDidFailToPlayForAdUnitID:(NSString *)adUnitID error:(NSError *)error {
-    NSLog(@"rewarded:didFailToPlayAdAdWithError: %@", [error localizedDescription]);
+- (void)rewardedAdDidFailToShowForAdUnitID:(NSString *)adUnitID error:(NSError *)error {
+    NSLog(@"rewardedAdDidFailToShowForAdUnitID: %@", [error localizedDescription]);
 }
 
-- (void)rewardedVideoAdWillAppearForAdUnitID:(NSString *)adUnitID {
-    NSLog(@"rewardedWillPresentScreen");
+- (void)rewardedAdWillPresentForAdUnitID:(NSString *)adUnitID {
+    NSLog(@"rewardedAdWillPresentForAdUnitID");
 }
 
-- (void)rewardedVideoAdDidAppearForAdUnitID:(NSString *)adUnitID {
-    NSLog(@"rewardedDidPresentScreen");
+- (void)rewardedAdDidPresentForAdUnitID:(NSString *)adUnitID {
+    NSLog(@"rewardedAdDidPresentForAdUnitID");
 }
 
-- (void)rewardedVideoAdWillDisappearForAdUnitID:(NSString *)adUnitID {
-    NSLog(@"rewardedWillDismissScreen");
+- (void)rewardedAdWillDismissForAdUnitID:(NSString *)adUnitID {
+    NSLog(@"rewardedAdWillDismissForAdUnitID");
 }
 
-- (void)rewardedVideoAdDidDisappearForAdUnitID:(NSString *)adUnitID {
-    NSLog(@"rewardedDidDismissScreen");
+- (void)rewardedAdDidDismissForAdUnitID:(NSString *)adUnitID {
+    NSLog(@"rewardedAdDidDismissForAdUnitID");
 }
 
-- (void)rewardedVideoAdDidReceiveTapEventForAdUnitID:(NSString *)adUnitID {
-    NSLog(@"rewardedDidTrackUserInteraction");
+- (void)rewardedAdDidReceiveTapEventForAdUnitID:(NSString *)adUnitID {
+    NSLog(@"rewardedAdDidReceiveTapEventForAdUnitID");
 }
 
-- (void)rewardedVideoAdWillLeaveApplicationForAdUnitID:(NSString *)adUnitID {
-    NSLog(@"rewardedWillWillLeaveApplication");
+- (void)rewardedAdWillLeaveApplicationForAdUnitID:(NSString *)adUnitID {
+    NSLog(@"rewardedAdWillLeaveApplicationForAdUnitID");
 }
 
-- (void)rewardedVideoAdShouldRewardForAdUnitID:(NSString *)adUnitID reward:(MPRewardedVideoReward *)reward {
+- (void)rewardedAdShouldRewardForAdUnitID:(NSString *)adUnitID reward:(MPReward *)reward {
     NSLog(@"Reward received with currency %@ , amount %lf", reward.currencyType, [reward.amount doubleValue]);
+}
+
+- (void)didTrackImpressionWithAdUnitID:(NSString *)adUnitID impressionData:(MPImpressionData *)impressionData {
+    NSLog(@"didTrackImpressionWithAdUnitID");
 }
 
 @end

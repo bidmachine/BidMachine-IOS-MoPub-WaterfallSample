@@ -6,8 +6,5 @@
 //  Copyright © 2021 BidMachine. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class Empty: NSObject {
-
-}
