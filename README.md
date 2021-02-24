@@ -396,15 +396,15 @@ In the snippet below you can see transfering of local extra data: [(configuratio
 
 ```objc
 - (void)loadRewardedVideo {
-    [MPRewardedVideo setDelegate:self forAdUnitId:@"AD_UNIT_ID"];
+    [MPRewardedAds setDelegate:self forAdUnitId:@"AD_UNIT_ID"];
     NSDictionary *localExtras = @{ @"here" : @"params" } ;
-    [MPRewardedVideo loadRewardedVideoAdWithAdUnitID:@"AD_UNIT_ID"
+    [MPRewardedAds loadRewardedAdWithAdUnitID:@"AD_UNIT_ID"
                                             keywords:nil
                                     userDataKeywords:nil
                                           customerId:nil
                                    mediationSettings:nil
                                          localExtras:localExtras];
-    [MPRewardedVideo presentRewardedVideoAdForAdUnitID:@"AD_UNIT_ID" fromViewController:self withReward:nil];
+    [MPRewardedAds presentRewardedAdForAdUnitID:@"AD_UNIT_ID" fromViewController:self withReward:nil];
 }
 
 ```
