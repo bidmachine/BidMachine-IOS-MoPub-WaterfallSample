@@ -1,7 +1,7 @@
 ![BidMachine iOS](https://appodeal-ios.s3-us-west-1.amazonaws.com/docs/bidmachine.png)
 
 # BidMachine IOS MoPub Waterfall Sample
-> **_WARNING:_**  This project contains a [ adapter submodule](https://github.com/bidmachine/BidMachine-IOS-MoPub-Adapter). Use ```git clone --recursive git@github.com:bidmachine/BidMachine-IOS-MoPub-HeaderBiddingSample.git``` to use all project files
+> **_WARNING:_**  This project contains a [ adapter submodule](https://github.com/bidmachine/BidMachine-IOS-MoPub-Adapter). Use ```git clone --recursive git@github.com:bidmachine/BidMachine-IOS-MoPub-WaterfallSample.git``` to use all project files
 
 - [Getting Started](#user-content-getting-started)
 - [BidMachine adapter](#user-content-bidmachine-adapter)
@@ -20,7 +20,7 @@ Add following lines into your project Podfile
 ```ruby
 target 'Target' do
   project 'Project.xcodeproj'
-  pod 'MoPub-BidMachine-Adapters', '~> 1.6.4.0'
+  pod 'MoPub-BidMachine-Adapters', '~> 1.6.4'
 end
 ```
 
@@ -29,7 +29,7 @@ end
 ```ruby
 target 'Target' do
   project 'Project.xcodeproj'
-  pod 'MoPub-BidMachine-Adapters', '~> 1.6.4.0'
+  pod 'MoPub-BidMachine-Adapters', '~> 1.6.4'
   pod "BidMachine/Adapters"
 end
 ```
