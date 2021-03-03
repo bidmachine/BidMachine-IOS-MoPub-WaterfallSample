@@ -55,6 +55,7 @@
     MPNativeAdRequest *request = [MPNativeAdRequest requestWithAdUnitIdentifier:@UNIT_ID rendererConfigurations:@[self.rendererConfiguration]];
     MPNativeAdRequestTargeting *targeting = MPNativeAdRequestTargeting.targeting;
     targeting.localExtras = AppDelegate.localExtras;
+    request.targeting = targeting;
     return request;
 }
 

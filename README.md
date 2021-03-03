@@ -4,18 +4,17 @@
 > **_WARNING:_**  This project contains a [ adapter submodule](https://github.com/bidmachine/BidMachine-IOS-MoPub-Adapter). Use ```git clone --recursive git@github.com:bidmachine/BidMachine-IOS-MoPub-WaterfallSample.git``` to use all project files
 
 - [Getting Started](#user-content-getting-started)
-- [BidMachine adapter](#user-content-bidmachine-adapter)
-  - [Initialize sdk](#user-content-initialize-sdk)
-  - [Transfer targeting data](#user-content-transfer-targeting-data-to-bidmachine)
-  - [Banner implementation](#user-content-banners-implementation)
-  - [Interstitial implementation](#user-content-interstitial-implementation)
-  - [Rewarded implementation](#user-content-rewarded-implementation)
-  - [Native ad implementation](#user-content-native-ad-implementation)
-  - [Header Bidding](#user-content-header-bidding)
+- [Initialize sdk](#user-content-initialize-sdk)
+- [Transfer targeting data](#user-content-transfer-targeting-data-to-bidmachine)
+- [Banner implementation](#user-content-banners-implementation)
+- [MREC implementation](#user-content-mrec-implementation)
+- [Interstitial implementation](#user-content-interstitial-implementation)
+- [Rewarded implementation](#user-content-rewarded-implementation)
+- [Native ad implementation](#user-content-native-ad-implementation)
 
 ## Getting Started
 
-Add following lines into your project Podfile
+##### Add following lines into your project Podfile
 
 ```ruby
 target 'Target' do
@@ -41,6 +40,8 @@ end
 | Key | Parameter| Type | Required | 
 | --- | --- |  --- | --- |
 | kBDMExtSellerKey | seller_id | String | Required |
+| kBDMExtStoreUrlKey | sturl | String | Required |
+| kBDMExtStoreIdKey | stid | String | Required |
 | kBDMExtTestModeKey | test_mode | String | Optional |
 | kBDMExtLoggingKey | logging_enabled | String | Optional |
 | kBDMExtBaseURLKey | endpoint | String | Optional |
@@ -54,8 +55,6 @@ end
 | kBDMExtCountryKey | country | String | Optional |
 | kBDMExtCityKey | city | String | Optional |
 | kBDMExtZipKey | zip | String | Optional |
-| kBDMExtStoreUrlKey | sturl | String | Optional |
-| kBDMExtStoreIdKey | stid | String | Optional |
 | kBDMExtPaidKey | paid | String | Optional |
 | kBDMExtStoreCatKey | store_cat | String | Optional |
 | kBDMExtStoreSubCatKey | store_subcat | String | Optional |
@@ -119,6 +118,10 @@ end
 ### Example configuration parameters
 
 ***"seller_id"*** field is required for initialization.
+
+***"sturl"*** field is required for initialization.
+
+***"stid"*** field is required for initialization.
 
 ***"mediation_config"*** field is required for initialization if you use header bidding network
 
@@ -324,13 +327,30 @@ The rest of the fields can be passed both to the initialization and to the reque
 }
 ```
 
-## BidMachine adapter
+##### Available ad units formats for Header Bidding
+
+You can pass constants that are listed below:
+
+* banner
+* banner_320x50
+* banner_728x90
+* banner_300x250
+* interstitial_video
+* interstitial_static
+* interstitial
+* rewarded_video
+* rewarded_static
+* rewarded
 
 ### Initialize SDK
 
-To initialize BidMachine use Mopub configuration method at start application
+> **_WARNING:_** To initialize BidMachine use Mopub configuration method at start application.
+> If you use the lineItem settings (mopub server params), then parameters for initialization can be empty
 
-A list of all parameters can be found here [(configuration params)](#user-content-example-configuration-parameters)
+> **_NOTE:_** **storeURL**, **storeId** and **seller_id** - are required parameters.
+> A list of all parameters can be found here [(configuration params)](#user-content-example-configuration-parameters)
+
+##### Yours implementation of initialization should look like this:
 
 ```objc
 - (void)initializeMoPub {
@@ -338,9 +358,77 @@ A list of all parameters can be found here [(configuration params)](#user-conten
     NSDictionary *configurationParams = @{
                                           kBDMExtTestModeKey  :   @"1",
                                           kBDMExtSellerKey    :   @"true",
-                                          kBDMExtLoggingKey   :   @"true"
+                                          kBDMExtLoggingKey   :   @"true",
+                                          kBDMExtStoreUrlKey  :   @"http://storeURL",
+                                          kBDMExtStoreIdKey   :   @"123456"
                                           };
     [sdkConfig setNetworkConfiguration:configurationParams
+                   forMediationAdapter:@"BidMachineAdapterConfiguration"];
+    
+    sdkConfig.loggingLevel = MPBLogLevelDebug;
+    
+    [[MoPub sharedInstance] initializeSdkWithConfiguration:sdkConfig
+                                                completion:^{
+                                                    NSLog(@"SDK initialization complete");
+                                                }];
+}
+```
+
+##### If you are using Header Bidding networks, then you need to set their parameters as follows
+To pass data for Header Bidding add to your local extras "mediation_config": [(configuration params)](#user-content-mediation-config-parameters)
+
+All network required fields and values types are described in BidMachine doc. ([WIKI](https://wiki.appodeal.com/display/BID/BidMachine+iOS+SDK+Documentation#BidMachineiOSSDKDocumentation-AdNetworksConfigurationsParameters)). If ad network has initialisation parameters, it should be added in root of mediation config object. Ad network ad unit specific paramters should be added in root of ad unit object.
+
+```objc
+- (void)initializeMoPub {
+    MPMoPubConfiguration *sdkConfig = [[MPMoPubConfiguration alloc] initWithAdUnitIdForAppInitialization: @"AD_UNIT_ID"];
+    NSDictionary *configurationParams = @{
+        kBDMExtTestModeKey      :   @"1",
+        kBDMExtSellerKey        :   @"true",
+        kBDMExtLoggingKey       :   @"true",
+        kBDMExtStoreUrlKey      :   @"http://storeURL",
+        kBDMExtStoreIdKey       :   @"123456",
+        kBDMExtNetworkConfigKey : @[@{@"ad_units": @[
+                                              @{
+                                                  @"ad_unit_id": @"30s6zt3ayypfyemwjvmp",
+                                                  @"format": @"banner_320x50"
+                                              },
+                                              @{
+                                                  @"orientation": @"portrait",
+                                                  @"ad_unit_id": @"6yws53jyfjgoq1ghnuqb",
+                                                  @"format": @"interstitial_static"
+                                              },
+                                              @{
+                                                  @"orientation": @"landscape",
+                                                  @"ad_unit_id": @"6yws53jyfjgoq1ghnuqb",
+                                                  @"format": @"interstitial_static"
+                                              }
+                                      ],
+                                      @"publisher_id": @"B-057601",
+                                      @"banner_ad_units": @[@"30s6zt3ayypfyemwjvmp"],
+                                      @"interstitial_ad_units": @[@"6yws53jyfjgoq1ghnuqb"],
+                                      @"network": @"criteo",
+                                      @"network_class": @"BDMCriteoAdNetwork"
+                                   }]
+    };
+    [sdkConfig setNetworkConfiguration:configurationParams
+                   forMediationAdapter:@"BidMachineAdapterConfiguration"];
+    
+    sdkConfig.loggingLevel = MPBLogLevelDebug;
+    
+    [[MoPub sharedInstance] initializeSdkWithConfiguration:sdkConfig
+                                                completion:^{
+        NSLog(@"SDK initialization complete");
+    }];
+}
+```
+
+##### If you are using lineItem settings for initialization, then the code might look like this
+
+```objc
+- (void)initializeMoPub {
+    MPMoPubConfiguration *sdkConfig = [[MPMoPubConfiguration alloc] initWithAdUnitIdForAppInitialization: @"AD_UNIT_ID"];
+    [sdkConfig setNetworkConfiguration:@{}
                    forMediationAdapter:@"BidMachineAdapterConfiguration"];
     
     sdkConfig.loggingLevel = MPBLogLevelDebug;
@@ -366,13 +454,33 @@ In the snippet below you can see transfering of local extra data: [(configuratio
 
 ```objc
 - (void)loadBannerAd {
+    CGSize adViewSize = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? kMPPresetMaxAdSize90Height : kMPPresetMaxAdSize50Height;
+    NSDictionary *localExtras = @{ @"here" : @"params" };
+
     self.adView = [[MPAdView alloc] initWithAdUnitId:@"AD_UNIT_ID"];
     self.adView.delegate = self;
-    self.adView.frame = CGRectMake(0, 0, 320, 50);
-    [self.view addSubview:self.adView];
-    NSDictionary *localExtras = @{ @"here" : @"params" } ;
+    
+    self.adView.frame = (CGRect){.size = adViewSize};
     [self.adView setLocalExtras:localExtras];
-    [self.adView loadAd];
+    [self.adView loadAdWithMaxAdSize:adViewSize];
+}
+```
+
+### MREC implementation
+
+In the snippet below you can see transfering of local extra data: [(configuration params)](#user-content-example-configuration-parameters)
+
+```objc
+- (void)loadBannerAd {
+    CGSize adViewSize = kMPPresetMaxAdSize250Height;
+    NSDictionary *localExtras = @{ @"here" : @"params" };
+
+    self.adView = [[MPAdView alloc] initWithAdUnitId:@"AD_UNIT_ID"];
+    self.adView.delegate = self;
+    
+    self.adView.frame = (CGRect){.size = adViewSize};
+    [self.adView setLocalExtras:localExtras];
+    [self.adView loadAdWithMaxAdSize:adViewSize];
 }
 ```
 
@@ -382,9 +490,11 @@ In the snippet below you can see transfering of local extra data: [(configuratio
 
 ```objc
 - (void)loadInterstitialAds {
+    NSDictionary *localExtras = @{ @"here" : @"params" } ;
+
     self.interstitial = [MPInterstitialAdController interstitialAdControllerForAdUnitId:@"AD_UNIT_ID"];
     self.interstitial.delegate = self;
-    NSDictionary *localExtras = @{ @"here" : @"params" } ;
+    
     [self.interstitial setLocalExtras:localExtras];
     [self.interstitial loadAd];
 }
@@ -396,15 +506,15 @@ In the snippet below you can see transfering of local extra data: [(configuratio
 
 ```objc
 - (void)loadRewardedVideo {
-    [MPRewardedAds setDelegate:self forAdUnitId:@"AD_UNIT_ID"];
     NSDictionary *localExtras = @{ @"here" : @"params" } ;
+
+    [MPRewardedAds setDelegate:self forAdUnitId:@"AD_UNIT_ID"];
     [MPRewardedAds loadRewardedAdWithAdUnitID:@"AD_UNIT_ID"
-                                            keywords:nil
-                                    userDataKeywords:nil
-                                          customerId:nil
-                                   mediationSettings:nil
-                                         localExtras:localExtras];
-    [MPRewardedAds presentRewardedAdForAdUnitID:@"AD_UNIT_ID" fromViewController:self withReward:nil];
+                                     keywords:nil
+                             userDataKeywords:nil
+                                   customerId:nil
+                            mediationSettings:nil
+                                  localExtras:localExtras];
 }
 
 ```
@@ -439,39 +549,12 @@ In the snippet below you can see transfering of local extra data: [(configuratio
 }
 
 - (MPNativeAdRequest *)request {
+    NSDictionary *localExtras = @{ @"here" : @"params" } ;
+
     MPNativeAdRequest *request = [MPNativeAdRequest requestWithAdUnitIdentifier:@UNIT_ID rendererConfigurations:@[self.rendererConfiguration]];
     MPNativeAdRequestTargeting *targeting = MPNativeAdRequestTargeting.targeting;
-    targeting.localExtras = @{ @"here" : @"params" } ;;
+    targeting.localExtras = localExtras ;
+    request.targeting = targeting;
     return request;
 }
 ```
-
-### Header Bidding
-
-To pass data for Header Bidding add to your local extras "mediation_config": [(configuration params)](#user-content-mediation-config-parameters)
-
-> **_NOTE:_** Also all Header Bidding data can be passed throug MoPub backend and can be configured as JSON in MoPub UI
-
-```objc
-
-- (NSDictionary *)localExtras {
-    NSMutableDictionary *localExtras = [NSMutableDictionary new];
-    localExtras[@"mediation_config"] = ["HEADER_BIDDING_CONFIG"];
-    return localExtras;
-}
-```
-
-#### Available ad units formats for Header Bidding
-
-You can pass constants that are listed below:
-
-* banner
-* banner_320x50
-* banner_728x90
-* banner_300x250
-* interstitial_video
-* interstitial_static
-* interstitial
-* rewarded_video
-* rewarded_static
-* rewarded
