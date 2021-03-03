@@ -24,6 +24,7 @@
     kMPPresetMaxAdSize90Height :
     kMPPresetMaxAdSize50Height;
     
+    self.bannerView.frame = (CGRect){.size = adViewSize};
     [self.bannerView setLocalExtras:AppDelegate.localExtras];
     [self.bannerView loadAdWithMaxAdSize:adViewSize];
 }

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "BDMExternalAdapterConfiguration.h"
+#import "BDMExternalAdapterConfigurationDefines.h"
 
 
 #define NATIVE_APP_ID         "7c3f8de23b9d4b7ab45a53ed2c3cb0c8"
@@ -74,6 +74,8 @@
         kBDMExtSellerKey : @"5",
         kBDMExtTestModeKey : @"true",
         kBDMExtLoggingKey : @"true",
+        kBDMExtStoreUrlKey : @"https://store_url.com",
+        kBDMExtStoreIdKey: @"342342"
     };
 }
 
