@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "BDMExternalAdapterConfigurationDefines.h"
 
 
 #define NATIVE_APP_ID         "7c3f8de23b9d4b7ab45a53ed2c3cb0c8"

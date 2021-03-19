@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <mopub-ios-sdk/MoPub.h>
 
+@import BidMachine.ExternalAdapterUtils;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
