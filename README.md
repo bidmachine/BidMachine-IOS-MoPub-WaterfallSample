@@ -19,7 +19,7 @@
 ```ruby
 target 'Target' do
   project 'Project.xcodeproj'
-  pod 'MoPub-BidMachine-Adapters', '~> 1.6.4'
+  pod 'MoPub-BidMachine-Adapters', '~> 1.7.1.0'
 end
 ```
 
@@ -28,8 +28,16 @@ end
 ```ruby
 target 'Target' do
   project 'Project.xcodeproj'
-  pod 'MoPub-BidMachine-Adapters', '~> 1.6.4'
-  pod "BidMachine/Adapters"
+  pod 'MoPub-BidMachine-Adapters', '~> 1.7.1.0'
+  pod "BDMAdColonyAdapter", "~> 1.7.1.0"
+  pod "BDMAmazonAdapter", "~> 1.7.1.0"
+  pod "BDMAppRollAdapter", "~> 1.7.1.0"
+  pod "BDMCriteoAdapter", "~> 1.7.1.0"
+  pod "BDMFacebookAdapter", "~> 1.7.1.0"
+  pod "BDMMyTargetAdapter", "~> 1.7.1.0"
+  pod "BDMSmaatoAdapter", "~> 1.7.1.0"
+  pod "BDMTapjoyAdapter", "~> 1.7.1.0"
+  pod "BDMVungleAdapter", "~> 1.7.1.0"
 end
 ```
 
@@ -125,7 +133,7 @@ end
 
 ***"mediation_config"*** field is required for initialization if you use header bidding network
 
-***"price_floors"*** field is used only in ad request parameters
+***"priceFloors"*** field is used only in ad request parameters
 
 The rest of the fields can be passed both to the initialization and to the request
 
@@ -186,143 +194,207 @@ The rest of the fields can be passed both to the initialization and to the reque
   "mediation_config" : 
   [
     {
-            "ad_units": [
-                {
-                    "placement_id": "95298PL39048",
-                    "format": "interstitial"
-                }
-            ],
-            "app_id": "5a35a75845eaab51250070a5",
-            "network": "vungle",
-            "network_class": "BDMVungleAdNetwork"
-        },
+        "network": "approll",
+        "network_class": "BDMAppRollAdNetwork",
+        "params" :
         {
-            "ad_units": [
+            "approll_id": "40f6d541-b128-4015-9a93-767bb8995669"
+        }
+    },
+    {
+        "network": "vungle",
+        "network_class": "BDMVungleAdNetwork",
+        "params" :
+        {
+            "app_id": "5a35a75845eaab51250070a5"
+        },
+        "ad_units": [
+            {
+                "format": "interstitial",
+                "params" :
                 {
-                    "unit_id": "140138",
-                    "format": "interstitial"
+                    "placement_id": "95298PL39048"
                 },
+                "custom_params" :
                 {
-                    "unit_id": "140136",
-                    "format": "rewarded"
+                    "custom_field": "unknown"
                 }
-            ],
-            "app_id": "117851",
-            "api_key": "8627b127f51e01875ba2e2fd71a88f95",
-            "network": "mintegral",
-            "network_class": "BDMMintegralAdNetwork"
-        },
-        {
-            "ad_units": [
+            }
+        ]
+    },
+    {
+        "network": "my_target",
+        "network_class": "BDMMyTargetAdNetwork",
+        "ad_units": [
+            {
+                "format": "banner_300x250",
+                "params" :
                 {
-                    "slot_id": "576962",
-                    "format": "banner_300x250"
+                    "slot_id": "576962"
                 }
-            ],
-            "network": "my_target",
-            "network_class": "BDMMyTargetAdNetwork"
-        },
+            }
+        ]
+    },
+    {
+        "network": "facebook",
+        "network_class": "BDMFacebookAdNetwork",
+        "params" :
         {
-            "ad_units": [
+            "app_id": "1525692904128549"
+        },
+        "ad_units": [
+            {
+                "format": "rewarded_video",
+                "params" :
                 {
-                    "facebook_key": "323042751509018_640127076467249",
-                    "format": "rewarded"
+                    "facebook_key": "1525692904128549_2395742753790222"
                 }
-            ],
-            "app_id": "323042751509018",
-            "placement_ids": [
-                "323042751509018_640127076467249"
-            ],
-            "network": "facebook",
-            "network_class": "BDMFacebookAdNetwork"
-        },
-        {
-            "ad_units": [
+            },
+            {
+                "format": "interstitial_static",
+                "params" :
                 {
-                    "placement_name": "video_without_cap_pb",
-                    "format": "interstitial_video"
+                    "facebook_key": "1525692904128549_2395740550457109"
                 }
-            ],
-            "sdk_key": "6gwG-HstT_aLMpZXUXlhNgEBja6Q5bq7i4GtdFMJoarOufnp36PaVlG2OBmw",
-            "network": "tapjoy",
-            "network_class": "BDMTapjoyAdNetwork"
-        },
-        {
-            "ad_units": [
+            },
+            {
+                "format": "banner_320x50",
+                "params" :
                 {
-                    "format": "rewarded_video",
+                    "facebook_key": "1525692904128549_2395736947124136"
+                }
+            }
+        ]
+    },
+    {
+        "network": "tapjoy",
+        "network_class": "BDMTapjoyAdNetwork",
+        "params" :
+        {
+            "sdk_key": "6gwG-HstT_aLMpZXUXlhNgEBja6Q5bq7i4GtdFMJoarOufnp36PaVlG2OBmw"
+        },
+        "ad_units": [
+            {
+                "format": "interstitial_video",
+                "params" :
+                {
+                    "placement_name": "video_without_cap_pb"
+                }
+            }
+        ]
+    },
+    {
+        "network": "adcolony",
+        "network_class": "BDMAdColonyAdNetwork",
+        "params" :
+        {
+            "app_id": "app327320f8ced14e61b2"
+        },
+        "ad_units": [
+            {
+                "format": "rewarded_video",
+                "params" :
+                {
                     "zone_id": "vzf07cd496be04483cad"
-                },
+                }
+            },
+            {
+                "format": "interstitial_video",
+                "params" :
                 {
-                    "format": "interstitial_video",
                     "zone_id": "vz7fdef471647c416682"
                 }
-            ],
-            "app_id": "app327320f8ced14e61b2",
-            "zones": [
-                "vzf07cd496be04483cad",
-                "vz7fdef471647c416682"
-            ],
-            "network": "adcolony",
-            "network_class": "BDMAdColonyAdNetwork"
-        },
+            }
+        ]
+    },
+    {
+        "network": "amazon",
+        "network_class": "BDMAmazonNetwork",
+        "params" :
         {
-            "ad_units": [
+            "app_key": "c5f20fe6e37146b08749d09bb2b6a4dd"
+        },
+        "ad_units": [
+            {
+                "format": "banner_320x50",
+                "params" :
                 {
-                    "slot_uuid": "54fb2d08-c222-40b1-8bbe-4879322dc04b",
-                    "format": "banner_300x250"
-                },
-                {
-                    "slot_uuid": "4e918ac0-5c68-4fe1-8d26-4e76e8f74831",
-                    "format": "interstitial_static"
+                    "slot_uuid": "88e6293b-0bf0-43fc-947b-925babe7bf3f"
                 }
-            ],
-            "app_key": "a9_onboarding_app_id",
-            "network": "amazon",
-            "network_class": "BDMAmazonNetwork"
-        },
-        {
-            "ad_units": [
+            },
+            {
+                "format": "interstitial_static",
+                "params" :
                 {
-                    "ad_unit_id": "30s6zt3ayypfyemwjvmp",
-                    "format": "banner_320x50"
-                },
+                    "slot_uuid": "424c37b6-38e0-4076-94e6-0933a6213496"
+                }
+            }
+        ]
+    },
+    {
+        "network": "criteo",
+        "network_class": "BDMCriteoAdNetwork",
+        "params" :
+        {
+            "publisher_id": "B-057601"
+        },
+        "ad_units": [
+            {
+                "format": "banner_320x50",
+                "params" :
+                {
+                    "ad_unit_id": "30s6zt3ayypfyemwjvmp"
+                }
+            },
+            {
+                "format": "interstitial_static",
+                "params" :
                 {
                     "orientation": "portrait",
-                    "ad_unit_id": "6yws53jyfjgoq1ghnuqb",
-                    "format": "interstitial_static"
-                },
+                    "ad_unit_id": "6yws53jyfjgoq1ghnuqb"
+                }
+            },
+            {
+                "format": "interstitial_static",
+                "params" :
                 {
                     "orientation": "landscape",
-                    "ad_unit_id": "6yws53jyfjgoq1ghnuqb",
-                    "format": "interstitial_static"
+                    "ad_unit_id": "6yws53jyfjgoq1ghnuqb"
                 }
-            ],
-            "publisher_id": "B-057601",
-            "banner_ad_units": ["30s6zt3ayypfyemwjvmp"],
-            "interstitial_ad_units": ["6yws53jyfjgoq1ghnuqb"],
-            "network": "criteo",
-            "network_class": "BDMCriteoAdNetwork"
-        },
+            }
+        ]
+    },
+    {
+        "network": "smaato",
+        "network_class": "BDMSmaatoAdNetwork",
+        "params" :
         {
-            "ad_units": [
+            "publisher_id": "1100042525"
+        },
+        "ad_units": [
+            {
+                "format": "banner_320x50",
+                "params" :
                 {
-                    "ad_space_id": "130563103",
-                    "format": "banner_320x50"
-                },
-                {
-                    "ad_space_id": "130626426",
-                    "format": "interstitial_static"
-                },
-                {
-                    "ad_space_id": "130626428",
-                    "format": "rewarded"
+                    "ad_space_id": "130563103"
                 }
-            ],
-            "publisher_id": "1100042525",
-            "network": "smaato",
-            "network_class": "BDMSmaatoAdNetwork"
-        }
+            },
+            {
+                "format": "interstitial_static",
+                "params" :
+                {
+                    "ad_space_id": "130626426"
+                }
+            },
+            {
+                "format": "rewarded",
+                "params" :
+                {
+                    "ad_space_id": "130626428"
+                }
+            }
+        ]
+    }
 ]
 }
 ```
@@ -377,7 +449,9 @@ You can pass constants that are listed below:
 ##### If you are using Header Bidding networks, then you need to set their parameters as follows
 To pass data for Header Bidding add to your local extras "mediation_config": [(configuration params)](#user-content-mediation-config-parameters)
 
-All network required fields and values types are described in BidMachine doc. ([WIKI](https://wiki.appodeal.com/display/BID/BidMachine+iOS+SDK+Documentation#BidMachineiOSSDKDocumentation-AdNetworksConfigurationsParameters)). If ad network has initialisation parameters, it should be added in root of mediation config object. Ad network ad unit specific paramters should be added in root of ad unit object.
+All network required fields and values types are described in BidMachine doc. ([WIKI](https://wiki.appodeal.com/display/BID/BidMachine+iOS+SDK+Documentation#BidMachineiOSSDKDocumentation-AdNetworksConfigurationsParameters)). If ad network has initialisation parameters, it should be added in params of mediation config object. Ad network ad unit specific paramters should be added in params of ad unit object.
+
+> **_ATTENTION:_** In version 1.7.0, the format for transferring parameters for HB has changed
 
 ```objc
 - (void)initializeMoPub {
@@ -388,28 +462,39 @@ All network required fields and values types are described in BidMachine doc. ([
         kBDMExtLoggingKey       :   @"true",
         kBDMExtStoreUrlKey      :   @"http://storeURL",
         kBDMExtStoreIdKey       :   @"123456",
-        kBDMExtNetworkConfigKey : @[@{@"ad_units": @[
-                                              @{
-                                                  @"ad_unit_id": @"30s6zt3ayypfyemwjvmp",
-                                                  @"format": @"banner_320x50"
-                                              },
-                                              @{
-                                                  @"orientation": @"portrait",
-                                                  @"ad_unit_id": @"6yws53jyfjgoq1ghnuqb",
-                                                  @"format": @"interstitial_static"
-                                              },
-                                              @{
-                                                  @"orientation": @"landscape",
-                                                  @"ad_unit_id": @"6yws53jyfjgoq1ghnuqb",
-                                                  @"format": @"interstitial_static"
-                                              }
-                                      ],
-                                      @"publisher_id": @"B-057601",
-                                      @"banner_ad_units": @[@"30s6zt3ayypfyemwjvmp"],
-                                      @"interstitial_ad_units": @[@"6yws53jyfjgoq1ghnuqb"],
-                                      @"network": @"criteo",
-                                      @"network_class": @"BDMCriteoAdNetwork"
-                                   }]
+        kBDMExtNetworkConfigKey : @[@{
+                                        @"network": @"criteo",
+                                        @"network_class": @"BDMCriteoAdNetwork",
+                                        @"params" :
+                                        @{
+                                            @"publisher_id": @"B-057601"
+                                        },
+                                        @"ad_units": @[
+                                            @{
+                                                @"format": @"banner_320x50",
+                                                @"params" :
+                                                @{
+                                                    @"ad_unit_id": @"30s6zt3ayypfyemwjvmp"
+                                                }
+                                            },
+                                            @{
+                                                @"format": @"interstitial_static",
+                                                @"params" :
+                                                @{
+                                                    @"orientation": @"portrait",
+                                                    @"ad_unit_id": @"6yws53jyfjgoq1ghnuqb"
+                                                }
+                                            },
+                                            @{
+                                                @"format": @"interstitial_static",
+                                                @"params" :
+                                                @{
+                                                    @"orientation": @"landscape",
+                                                    @"ad_unit_id": @"6yws53jyfjgoq1ghnuqb"
+                                                }
+                                            }
+                                        ]
+                                    }]
     };
     [sdkConfig setNetworkConfiguration:configurationParams
                    forMediationAdapter:@"BidMachineAdapterConfiguration"];
