@@ -3,7 +3,7 @@ install! 'cocoapods', :deterministic_uuids => false, :warn_for_multiple_pod_sour
 
 
 $BDMVersion = '~> 1.7.3.0'
-$MopubVersion = '5.16.2'
+$MopubVersion = '5.17.0'
 
 def bidmachine
   pod "BDMIABAdapter", $BDMVersion
