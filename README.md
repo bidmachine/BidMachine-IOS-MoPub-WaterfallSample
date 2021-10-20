@@ -194,14 +194,6 @@ The rest of the fields can be passed both to the initialization and to the reque
   "mediation_config" : 
   [
     {
-        "network": "approll",
-        "network_class": "BDMAppRollAdNetwork",
-        "params" :
-        {
-            "approll_id": "40f6d541-b128-4015-9a93-767bb8995669"
-        }
-    },
-    {
         "network": "vungle",
         "network_class": "BDMVungleAdNetwork",
         "params" :
