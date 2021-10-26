@@ -82,7 +82,7 @@ end
 | kBDMExtHeightKey | banner_height | Number | Optional |
 | kBDMExtFullscreenTypeKey | ad_content_type | String | Optional |
 | kBDMExtNativeTypeKey | adunit_native_format | String | Optional |
-| kBDMExtPriceFloorKey | priceFloors (price_floors (in 1.7.4+)) | Array | Optional |
+| kBDMExtPriceFloorKey | priceFloors | Array | Optional |
 
 ```
 @"seller_id"                  --> Your Seller ID
